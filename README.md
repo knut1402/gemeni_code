@@ -1,4 +1,4 @@
-Core Modules:
+Core Modules: /n
 •	data/conventions.yaml: The new, structured configuration file.
 •	src/config.py: Loads and provides access to the conventions.yaml data.
 •	src/data_manager.py: Centralizes Bloomberg API interactions (pdblp) and handles loading/saving historical data (e.g., from .pkl files in data_lake/).
