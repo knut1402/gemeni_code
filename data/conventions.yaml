@@ -1,0 +1,368 @@
+# data/conventions.yaml
+
+currencies:
+  USD:
+    ql_currency: USDCurrency
+    calendar: UnitedStates
+    settlement_days: 2
+    fixed_leg:
+      frequency: Annual
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    floating_leg:
+      frequency: Quarterly
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    fixing_index: USDLIBR3M Index
+    fixing_tenor: 3M
+    ois_trigger: False # Indicates if an OIS curve is used for discounting
+    dc_index: SOFR_DC # Discounting curve index if OIS_TRIGGER is True
+    bbg_curve: USD SWAP Curncy
+    bbgplot_tickers:
+      - USSW
+      - USSF
+      - USSP # Example for OIS futures (e.g., SOFR futures)
+    add_on_instruments: # For building the curve, e.g., FRAs, Futures
+      type: FUT
+      tickers:
+        - EDM1 Comdty # Example for Eurodollar futures
+        - EDU1 Comdty
+        - EDZ1 Comdty
+        - EDH2 Comdty
+      conversion_corrections: # CC adjustments for futures
+        EDM1 Comdty: 0.00
+        EDU1 Comdty: 0.00
+        EDZ1 Comdty: 0.00
+        EDH2 Comdty: 0.00
+    base_ticker: FDTR Index # For WIRP (e.g., Fed Funds Target Rate)
+    cb_contrib_type: 'USSP' # Example for central bank contrib type (e.g., SOFR futures)
+    cb_num_meets: 12 # Number of future central bank meetings to consider
+    ois_meet_hist_file: SOFR_DC_OIS_MEETING_HIST.pkl # Historical WIRP data file
+
+  GBP:
+    ql_currency: GBPCurrency
+    calendar: UnitedKingdom
+    settlement_days: 0 # Sonia is typically T+0
+    fixed_leg:
+      frequency: Annual
+      day_count: Actual365Fixed
+      business_day_convention: ModifiedFollowing
+    floating_leg:
+      frequency: Quarterly
+      day_count: Actual365Fixed
+      business_day_convention: ModifiedFollowing
+    fixing_index: SONIO/N Index
+    fixing_tenor: 1D # Overnight rate for SONIA
+    ois_trigger: True
+    dc_index: SONIA_DC
+    bbg_curve: GBP SWAP Curncy
+    bbgplot_tickers:
+      - BPSWS
+      - BPSF
+      - BPSF # Example for OIS futures
+    add_on_instruments:
+      type: FUT
+      tickers:
+        - LOM1 Comdty # Example for Short Sterling futures
+        - LOU1 Comdty
+        - LOZ1 Comdty
+        - LOH2 Comdty
+      conversion_corrections: {} # Empty for now, add if needed
+    base_ticker: UKBRBASE Index # Bank of England Base Rate
+    cb_contrib_type: 'BPSF' # Example for central bank contrib type (e.g., SONIA futures)
+    cb_num_meets: 12
+    ois_meet_hist_file: SONIA_DC_OIS_MEETING_HIST.pkl
+
+  EUR:
+    ql_currency: EURCurrency
+    calendar: TARGET
+    settlement_days: 2
+    fixed_leg:
+      frequency: Annual
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    floating_leg:
+      frequency: Quarterly
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    fixing_index: ESTROND Index
+    fixing_tenor: 1D
+    ois_trigger: True
+    dc_index: ESTER_DC
+    bbg_curve: EUR SWAP Curncy
+    bbgplot_tickers:
+      - EESWS
+      - EESW
+      - EESW # Example for OIS futures (e.g., ESTER futures)
+    add_on_instruments:
+      type: FUT
+      tickers:
+        - GCH1 Comdty # Example for Euribor futures
+        - GCM1 Comdty
+        - GCU1 Comdty
+        - GCZ1 Comdty
+      conversion_corrections: {}
+    base_ticker: EURECBDA Index # ECB Deposit Facility Rate
+    cb_contrib_type: 'EESW'
+    cb_num_meets: 12
+    ois_meet_hist_file: ESTER_DC_OIS_MEETING_HIST.pkl
+
+  # Add more currencies as needed
+  NOK:
+    ql_currency: NOKCurrency
+    calendar: Norway
+    settlement_days: 2
+    fixed_leg:
+      frequency: Annual
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    floating_leg:
+      frequency: Quarterly
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    fixing_index: NIBOR3M Index
+    fixing_tenor: 3M
+    ois_trigger: False # Example: No OIS disc curve, so use standard swap curve
+    bbg_curve: NOK SWAP Curncy
+    bbgplot_tickers:
+      - NKSO
+      - NKSR
+      - NKSO
+    add_on_instruments:
+      type: NONE # No specific FRA/FUT for curve building
+      tickers: []
+      conversion_corrections: {}
+    base_ticker: NOKRBASE Index
+    cb_contrib_type: ''
+    cb_num_meets: 0
+    ois_meet_hist_file: ''
+
+  PLN:
+    ql_currency: PLNCurrency
+    calendar: Poland
+    settlement_days: 2
+    fixed_leg:
+      frequency: Annual
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    floating_leg:
+      frequency: Quarterly
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    fixing_index: WIBOR3M Index
+    fixing_tenor: 3M
+    ois_trigger: False
+    bbg_curve: PLN SWAP Curncy
+    bbgplot_tickers:
+      - PLSW
+      - PLSR
+      - PLSW
+    add_on_instruments:
+      type: NONE
+      tickers: []
+      conversion_corrections: {}
+    base_ticker: PLRPBASE Index
+    cb_contrib_type: ''
+    cb_num_meets: 0
+    ois_meet_hist_file: ''
+
+  CZK:
+    ql_currency: CZKCurrency
+    calendar: CzechRepublic
+    settlement_days: 2
+    fixed_leg:
+      frequency: Annual
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    floating_leg:
+      frequency: Quarterly
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    fixing_index: PRIBOR3M Index
+    fixing_tenor: 3M
+    ois_trigger: False
+    bbg_curve: CZK SWAP Curncy
+    bbgplot_tickers:
+      - CZSW
+      - CZSR
+      - CZSW
+    add_on_instruments:
+      type: NONE
+      tickers: []
+      conversion_corrections: {}
+    base_ticker: CZCBBASE Index
+    cb_contrib_type: ''
+    cb_num_meets: 0
+    ois_meet_hist_file: ''
+
+  HUF:
+    ql_currency: HUFCurrency
+    calendar: Hungary
+    settlement_days: 2
+    fixed_leg:
+      frequency: Annual
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    floating_leg:
+      frequency: Quarterly
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    fixing_index: BUBOR3M Index
+    fixing_tenor: 3M
+    ois_trigger: False
+    bbg_curve: HUF SWAP Curncy
+    bbgplot_tickers:
+      - HUSW
+      - HUSR
+      - HUSW
+    add_on_instruments:
+      type: NONE
+      tickers: []
+      conversion_corrections: {}
+    base_ticker: HUFRBASE Index
+    cb_contrib_type: ''
+    cb_num_meets: 0
+    ois_meet_hist_file: ''
+
+  ZAR:
+    ql_currency: ZARCurrency
+    calendar: SouthAfrica
+    settlement_days: 2
+    fixed_leg:
+      frequency: Annual
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    floating_leg:
+      frequency: Quarterly
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    fixing_index: JIBAR3M Index
+    fixing_tenor: 3M
+    ois_trigger: False
+    bbg_curve: ZAR SWAP Curncy
+    bbgplot_tickers:
+      - ZASW
+      - ZASR
+      - ZASW
+    add_on_instruments:
+      type: NONE
+      tickers: []
+      conversion_corrections: {}
+    base_ticker: ZARLBASE Index
+    cb_contrib_type: ''
+    cb_num_meets: 0
+    ois_meet_hist_file: ''
+
+  ILS:
+    ql_currency: ILSCurrency
+    calendar: Israel
+    settlement_days: 2
+    fixed_leg:
+      frequency: Annual
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    floating_leg:
+      frequency: Quarterly
+      day_count: Actual360
+      business_day_convention: ModifiedFollowing
+    fixing_index: TELBOR3M Index
+    fixing_tenor: 3M
+    ois_trigger: False
+    bbg_curve: ILS SWAP Curncy
+    bbgplot_tickers:
+      - ILSW
+      - ILSR
+      - ILSW
+    add_on_instruments:
+      type: NONE
+      tickers: []
+      conversion_corrections: {}
+    base_ticker: ISRAELBASE Index
+    cb_contrib_type: ''
+    cb_num_meets: 0
+    ois_meet_hist_file: ''
+
+inflation_indices:
+  HICPxT:
+    ql_inflation_index: EUHICPXT
+    bbg_ticker_root: EUMRHHIC Index # For inflation swaps (e.g., EUMRHHIC 1Y Curncy)
+    bbg_fixing_ticker_root: CPINEMU
+    print_dates: # Example, actual list needed
+      - '2021-01-18'
+      - '2021-02-18'
+      - '2021-03-18'
+    dc_curve_index: ESTER_DC
+    lag_months: 0 # No lag for HICPxT. Check actual
+    interp_method: 0 # 0 for no interpolation, 1 for linear
+    fixing_hist_file: HICPxT_fixing_hist.pkl
+    seasonality_file: HICPxT_seas.pkl
+    base_month: 2021-06-01 # Example, actual date needed
+
+  UKRPI:
+    ql_inflation_index: UKRPI
+    bbg_ticker_root: UKRPI
+    bbg_fixing_ticker_root: UKRPI
+    print_dates:
+      - '2021-01-19'
+      - '2021-02-17'
+      - '2021-03-17'
+    dc_curve_index: SONIA_DC
+    lag_months: 0 # No lag for UKRPI. Check actual
+    interp_method: 0
+    fixing_hist_file: UKRPI_fixing_hist.pkl
+    seasonality_file: UKRPI_seas.pkl
+    base_month: 2021-06-01
+
+  USCPI:
+    ql_inflation_index: USCPI
+    bbg_ticker_root: USCPI
+    bbg_fixing_ticker_root: CPI
+    print_dates:
+      - '2021-01-13'
+      - '2021-02-10'
+      - '2021-03-10'
+    dc_curve_index: SOFR_DC
+    lag_months: 3 # CPI has a 3-month lag for indexation
+    interp_method: 1 # Example: CPI typically interpolated
+    fixing_hist_file: USCPI_fixing_hist.pkl
+    seasonality_file: USCPI_seas.pkl
+    base_month: 2021-06-01
+
+# Add other inflation indices as needed
+
+futures_conventions:
+  bond_futures:
+    USU: # US Treasury futures
+      ctd_isin_field: FUT_CTD_ISIN
+      delivery_date_field: FUT_DLV_DT_LAST
+      conversion_factor_field: FUT_CNVS_FACTOR
+      px_last_field: PX_LAST
+    TYU: # US 10-Year Treasury futures
+      ctd_isin_field: FUT_CTD_ISIN
+      delivery_date_field: FUT_DLV_DT_LAST
+      conversion_factor_field: FUT_CNVS_FACTOR
+      px_last_field: PX_LAST
+  stir_futures:
+    ED: # Eurodollar futures
+      option_suffix: Comdty
+      underlying_ticker_field: OPT_UNDL_TICKER
+      last_tradeable_date_field: LAST_TRADEABLE_DT
+    RX: # Euro-Bund futures (for options)
+      option_suffix: Comdty
+      underlying_ticker_field: OPT_UNDL_TICKER
+      last_tradeable_date_field: LAST_TRADEABLE_DT
+    LOM: # Short Sterling futures
+      option_suffix: Comdty
+      underlying_ticker_field: OPT_UNDL_TICKER
+      last_tradeable_date_field: LAST_TRADEABLE_DT
+    # Add other STIR futures as needed
+
+general_settings:
+  data_lake_path: data/data_lake # Path to the directory containing .pkl files
+  default_bloomberg_timeout: 50000
+  default_bloomberg_port: 8194
+  default_pandas_max_columns: 10000
+  default_pandas_display_width: 10000
+  default_risk_free_rate_ticker: FEDL01 Index # For options pricing, etc.
+  default_div_rate: 0.0 # For options pricing (equity/bond futures typically no dividend)
+  default_option_max_vol: 100 # For implied volatility calculation
